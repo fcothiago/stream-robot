@@ -1,4 +1,5 @@
-from webscraper.interface                                                                    import webscraper
+from webscraper.interface                                                                    
+import webscraper
 
 class twitch(webscraper):
     def __init__(self,name):
