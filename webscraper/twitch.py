@@ -1,5 +1,5 @@
-from webscraper.interface                                                                    
-import webscraper
+from webscraper.interface import webscraper
+import json 
 
 class twitch(webscraper):
     def __init__(self,name):
@@ -16,4 +16,6 @@ class twitch(webscraper):
             self.streamer.description = data['description']
             self.streamer.thumb = data['thumbnailUrl'][0]
         else:
-            return 
+            self.streamer.onlive = False 
+            self.streamer.description = "Offline"
+            self.streamer.thumb = ""
