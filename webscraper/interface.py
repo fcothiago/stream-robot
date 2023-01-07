@@ -12,11 +12,12 @@ class streamer_infos:
 
 class webscraper:
     __base_url__ = "https://www.twitch.tv/"
-    __html__ = ""
+
     __PM__ = urllib3.PoolManager()
-    streamer = streamer_infos()
 
     def __init__(self,name):
+        self.__html__ = ""
+        self.streamer = streamer_infos()
         self.name = name
         self.url = f'{self.__base_url__}{self.name}'
     def update(self):
