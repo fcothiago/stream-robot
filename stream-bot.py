@@ -74,6 +74,8 @@ if __name__ == "__main__":
     root.geometry("320x320")
     root.minsize(320,320)
     root.mainloop()
+    #Stoping Tasks
+    bot.stop()
     #Saving all
     file.close()
     file = open("streamers.json","w")
