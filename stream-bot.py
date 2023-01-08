@@ -17,8 +17,9 @@ if __name__ == "__main__":
     root = Tk()
     app = GUI(root,data,bot)
     root.wm_title("Stream-robot")
-    root.geometry("320x320")
-    root.minsize(320,320)
+    root.geometry("440x440")
+    root.minsize(440,440)
+    root.maxsize(440,440)
     root.mainloop()
     #Stoping Tasks
     bot.stop()
