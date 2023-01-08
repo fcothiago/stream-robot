@@ -14,15 +14,17 @@ class GUI(Frame):
         self.canvas = Canvas(self)
         self.canvas.place(relwidth=1,relheigh=0.8)
         self.scroll_bar = Scrollbar(self,orient=VERTICAL, command=self.canvas.yview)
-        self.scroll_bar.pack(fill=Y, side="right")
+        self.scroll_bar.pack(fill=Y, side="left")
         self.canvas.config(yscrollcommand = self.scroll_bar.set)
         self.canvas.bind('<Configure>',lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
 
         self.itensFrame = Frame(self.canvas)
         self.widgets = dict()
+        
         for task in list(bot.tasks.values()):
             self.drawitem(task)
-        self.canvas.create_window((0,0),width=440,window=self.itensFrame,anchor="ne")
+        self.canvas.create_window((0,0),width=480,window=self.itensFrame,anchor="ne")
+        
         add = Button(self, text="Add",command=lambda:self.add_task())
         add.place(relx=0.5, rely=0.925,anchor=CENTER)
         
@@ -31,15 +33,21 @@ class GUI(Frame):
     def drawitem(self,task):
         item = Frame(self.itensFrame,borderwidth=1,relief="groove")
         item.pack(fill=X)
+        
         name = Label(item,text=task.streamer.name)
-        name.pack(side="left")
+        name.place(x=15,rely=0.5,anchor=W)
+        
         status = Label(item,borderwidth=0,relief="flat") 
         status.place(relx=0.5,rely=0.5,anchor=CENTER)
+        
         delete=Button(item,text='x',command=lambda name=task.streamer.name,item=item:self.remove(name,item))
         delete.pack(side="right")
+        
         runing = Button(item)
         runing.pack(side="right")
+        
         name.config(text=task.streamer.name)
+        
         status.config(text="Online" if task.streamer.streamer.onlive else "Offline")
         if not task.flag:
             runing.config(text="Stop",width=5,command=lambda t=task,f=True: self.task_flag(t,f))
@@ -79,6 +87,3 @@ class GUI(Frame):
                 self.data.remove(i)
                 break
         self.update()
-
-    def update_size(self,e=None):
-        self.canvas["scrollregion"] = self.canvas.bbox("all")

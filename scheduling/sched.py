@@ -16,12 +16,12 @@ class sbot(Thread):
         self.__runing__ = False
         self.wait = 120
         self.tasks = dict()
+        self.exit = Event()
         for name, site, browser in configs:
             self.add(name, site, browser)
 
     def run(self):
         self.__runing__ = True
-        self.exit = Event()
         with ThreadPoolExecutor(4) as executor:
             while(self.__runing__ == True):
                 futures =  [executor.submit(t.start) for t in list(self.tasks.values())]
@@ -39,5 +39,4 @@ class sbot(Thread):
         l = firefox(s.url) if browser == 'firefox' else None
         t = task(s,l)
         self.tasks[name] = t
-        t.start()
         
