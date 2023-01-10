@@ -63,6 +63,6 @@ class GUI(Frame):
         index = self.itensBox.curselection()
         if(index != ()):
             index = index[0]
-            self.itensBox.delete(index,END)
+            self.itensBox.delete(index)
             del self.bot.tasks[index]
             del self.data[index]
