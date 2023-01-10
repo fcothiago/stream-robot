@@ -74,7 +74,7 @@ class GUI(Frame):
 
     def add_task(self):
         name=askstring("Add Streamer","Streamer Name")
-        self.bot.add(name,'twitch','firefox')
+        self.bot.add(name,'twitch','firefox',True)
         self.data.append([name,'twitch','firefox'])
         self.drawitem(self.bot.tasks[name])
 
