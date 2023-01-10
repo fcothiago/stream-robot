@@ -1,6 +1,7 @@
 from browser.interface import browser
 
 class firefox(browser):
-    def __init__(self,url):
-        browser.__init__(self,url)
-        self.cmd = f'firefox {self.url}'
+    def __init__(self):
+        browser.__init__(self)
+    def getcmd(self):
+        return f'firefox {self.url}'

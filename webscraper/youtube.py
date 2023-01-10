@@ -4,7 +4,7 @@ import json
 class youtube(webscraper):
     def __init__(self,name):
         self.__base_url__ = "https://www.youtube.com/"
-        webscraper.__init__(self,name)
+        webscraper.__init__(self,"@"+name)
 
     def __check_infos__(self):
         tag = "script"
@@ -18,9 +18,12 @@ class youtube(webscraper):
             index = field.text.find("{")
             data = field.text[index:-1]
             data = json.loads(data)
-            self.streamer.onlive = "streams" in data["contents"]["twoColumnBrowseResultsRenderer"]["tabs"][3]["tabRenderer"]["endpoint"]["commandMetadata"]["webCommandMetadata"]["url"]
-            self.streamer.description = data["metadata"]["channelMetadataRenderer"]["description"]
+            try:
+                self.streamer.onlive = data['contents']['twoColumnBrowseResultsRenderer']['tabs'][0]['tabRenderer']['content']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents'][0]['channelFeaturedContentRenderer']['items'][0]['videoRenderer']['thumbnailOverlays'][0]['thumbnailOverlayTimeStatusRenderer']['icon']['iconType'] == "LIVE"
+                self.streamer.description = data["metadata"]["channelMetadataRenderer"]["description"]
+            except:
+                self.streamer.onlive = False 
+                self.streamer.description = "Offline"
         else:
             self.streamer.onlive = False 
             self.streamer.description = "Offline"
-            #self.streamer.thumb = ""

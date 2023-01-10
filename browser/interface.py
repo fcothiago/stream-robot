@@ -1,7 +1,7 @@
 import os
 
 class browser:
-    def __init__(self,url):
-        self.url = url
+    def __init__(self):
+        self.url = ""
     def launch(self):
-        os.system(self.cmd)
+        os.system(self.getcmd())

@@ -39,7 +39,7 @@ class sbot(Thread):
             
     def add(self,name, site, browser,start=False):
         s = twitch(name) if site == 'twitch' else youtube(name) if site == "youtube" else None
-        l = firefox(s.url) if browser == 'firefox' else None
+        l = firefox() if browser == 'firefox' else None
         t = task(s,l)
         self.tasks.append(t)
         if start:

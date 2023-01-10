@@ -10,5 +10,6 @@ class task():
             return
         self.streamer.update()
         if(self.streamer.streamer.onlive):
+            self.launcher.url = self.streamer.live_url
             self.launcher.launch()
             self.flag = True
