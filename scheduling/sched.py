@@ -1,8 +1,9 @@
-from threading import Thread
-from threading import Event
 from scheduling.task import task
 from browser.firefox import firefox
 from webscraper.twitch import twitch
+from webscraper.youtube import youtube
+from threading import Thread
+from threading import Event
 from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import wait
 import concurrent.futures
@@ -34,9 +35,10 @@ class sbot(Thread):
         self.__runing__ = False
         self.exit.set()
             
-    def add(self,name, site, browser):
-        s = twitch(name) if site == 'twitch' else None
+    def add(self,name, site, browser,start=False):
+        s = twitch(name) if site == 'twitch' else youtube(name) if site == "youtube" else None
         l = firefox(s.url) if browser == 'firefox' else None
         t = task(s,l)
         self.tasks[name] = t
-        
+        if start:
+            t.start()

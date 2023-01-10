@@ -8,11 +8,9 @@ class streamer_infos:
         self.onlive = False
         self.description = ""
         self.lastupdate = None
-        self.thumb = ""
+        #self.thumb = ""
 
 class webscraper:
-    __base_url__ = "https://www.twitch.tv/"
-
     __PM__ = urllib3.PoolManager()
 
     def __init__(self,name):
