@@ -31,13 +31,6 @@ To run stream-robot GUI, run stream-bot.py file.
 python3 stream-bot.py
 ```
 
-### GUI basic usage
-
-The window have a add button and a list where each item have two labels, representing a channel name and its status, and two buttons. The button actions os listed below.
-
-* **Add Button**: Use it to add a new stremaer to the list. You ganna need to infor the streamer channel name. For instance, to add the streamer https://www.twitch.tv/casimito to the list, you only need to pass casimito.
-* **X**: Use it to remove a stremer from the list.
-* **Start/Stop Button**: When a new tab is opened for a streamer, the bot stop to monitor that streamer to avoid redundant tabs. You can make the bot start or stop monitoring the streaming using this button.
 
 ## Using sbot class.
 
@@ -70,17 +63,17 @@ bot.add("stramer name","streaming site","browser")
 
 The currently valid values is listed below.
 
-* **Streming Sites**: twitch
+* **Streming Sites**: twitch,youtube
 * **Browser** : firefox 
 
 As said before, when a new tab is opened, the bot stop to monitor streamer's status. The following code shows a easy way to start or stop a streamer monitoring.
 
 ```python
-name = "Streamer's channel name"
+index = streamers_channel_index
 #if status is False, the bot is being monitored.
-status = bot.tasks[name].flag
+status = bot.tasks[index].flag
 #Force start
-bot.tasks[name].flag = False
+bot.tasks[index].flag = False
 #Force stop
-bot.tasks[name].flag = True
+bot.tasks[index].flag = True
 ```

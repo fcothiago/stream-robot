@@ -18,6 +18,7 @@ class sbot(Thread):
         self.wait = 120
         self.tasks = []
         self.exit = Event()
+        self.callback = lambda cb : ()
         for name, site, browser in configs:
             self.add(name, site, browser)
 
@@ -28,6 +29,7 @@ class sbot(Thread):
                 futures =  [executor.submit(t.start) for t in list(self.tasks)]
                 for future in concurrent.futures.as_completed(futures):
                     pass
+                self.callback()
                 self.exit.wait(self.wait)
             self.__runing__ = False
 

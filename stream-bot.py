@@ -12,7 +12,7 @@ if __name__ == "__main__":
     except:
         data = {"streamers":[]}
     bot = sbot(data)
-    bot.start()
+    #bot.start()
     #Starting GUI
     root = Tk()
     app = GUI(root,data,bot)

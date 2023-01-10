@@ -36,7 +36,8 @@ class GUI(Frame):
         self.listitens = tkinter.Variable(value=self.itens)
         self.itensBox = Listbox(self,listvariable=self.listitens)
         self.itensBox.pack(fill=BOTH, expand=True)
-        #self.update_event()
+        self.bot.callback = lambda: self.update()
+        self.bot.start()
 
     def getItem(self,task):
         name = task.streamer.name
@@ -46,13 +47,9 @@ class GUI(Frame):
         return f'{onlive}{name} - {status}'
 
     def update(self):
-        for task,name,status,delete,runing in list(self.widgets.values()):
-            name.config(text=task.streamer.name)
-            status.config(text="Online" if task.streamer.streamer.onlive else "Offline")
-            if not task.flag:
-                runing.config(text="Stop",width=5,command=lambda t=task,f=True: self.task_flag(t,f))
-            else:
-                runing.config(text="Start",width=5,command=lambda t=task,f=False: self.task_flag(t,f))
+        self.itensBox.delete(0, END)
+        for t in self.bot.tasks:
+            self.itensBox.insert(END,self.getItem(t))
 
     def add_task(self):
         name=askstring("Add Streamer","Streamer Name")
@@ -67,5 +64,5 @@ class GUI(Frame):
         if(index != ()):
             index = index[0]
             self.itensBox.delete(index,END)
-            self.bot.tasks[index].flag = True
+            del self.bot.tasks[index]
             del self.data[index]
