@@ -18,8 +18,6 @@ if __name__ == "__main__":
     app = GUI(root,data,bot)
     root.wm_title("Stream-robot")
     root.geometry("360x360")
-    root.minsize(480,120)
-    root.maxsize(480,720)
     root.mainloop()
     #Stoping Tasks
     bot.stop()

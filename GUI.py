@@ -2,58 +2,48 @@ from tkinter import *
 import tkinter.simpledialog
 from scheduling.sched import sbot
 from tkinter.simpledialog import askstring
+from webscraper.twitch import twitch
+from webscraper.youtube import youtube
+from browser.firefox import firefox
 
 class GUI(Frame):
     def __init__(self,master,data,bot):
         Frame.__init__(self, master)
+        #Layout
         self.bot = bot
         self.data = data
         self.master = master
         self.pack(fill=BOTH, expand=1)
-        
-        self.canvas = Canvas(self)
-        self.canvas.place(relwidth=1,relheigh=0.8)
-        self.scroll_bar = Scrollbar(self,orient=VERTICAL, command=self.canvas.yview)
-        self.scroll_bar.pack(fill=Y, side="left")
-        self.canvas.config(yscrollcommand = self.scroll_bar.set)
-        self.canvas.bind('<Configure>',lambda e: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
 
-        self.itensFrame = Frame(self.canvas)
-        self.widgets = dict()
+        container = Frame(self)
+        container.pack(fill=X)
         
-        for task in list(bot.tasks.values()):
-            self.drawitem(task)
-        self.canvas.create_window((0,0),width=480,window=self.itensFrame,anchor="ne")
-        
-        add = Button(self, text="Add",command=lambda:self.add_task())
-        add.place(relx=0.5, rely=0.925,anchor=CENTER)
-        
-        self.update_event()
+        #Buttons        
+        self.add = Button(container, text="Add",command=lambda:self.add_task())
+        self.add.pack(side="left")
 
-    def drawitem(self,task):
-        item = Frame(self.itensFrame,borderwidth=1,relief="groove")
-        item.pack(fill=X)
+        self.choice = StringVar()
+        self.choice.set('twitch')
+
+        self.menu = OptionMenu(container,self.choice,"twitch", "youtube")
+        self.menu.pack(side="left")
+
+        self.delete = Button(container, text="Del",command=lambda:self.del_task())
+        self.delete.pack(side="right")
         
-        name = Label(item,text=task.streamer.name)
-        name.place(x=15,rely=0.5,anchor=W)
-        
-        status = Label(item,borderwidth=0,relief="flat") 
-        status.place(relx=0.5,rely=0.5,anchor=CENTER)
-        
-        delete=Button(item,text='x',command=lambda name=task.streamer.name,item=item:self.remove(name,item))
-        delete.pack(side="right")
-        
-        runing = Button(item)
-        runing.pack(side="right")
-        
-        name.config(text=task.streamer.name)
-        
-        status.config(text="Online" if task.streamer.streamer.onlive else "Offline")
-        if not task.flag:
-            runing.config(text="Stop",width=5,command=lambda t=task,f=True: self.task_flag(t,f))
-        else:
-            runing.config(text="Start",width=5,command=lambda t=task,f=False: self.task_flag(t,f))
-        self.widgets[task.streamer.name] = (task,name,status,delete,runing)
+        #Streamers List
+        self.itens = [self.getItem(t) for t in self.bot.tasks]
+        self.listitens = tkinter.Variable(value=self.itens)
+        self.itensBox = Listbox(self,listvariable=self.listitens)
+        self.itensBox.pack(fill=BOTH, expand=True)
+        #self.update_event()
+
+    def getItem(self,task):
+        name = task.streamer.name
+        onlive = "On live " if task.streamer.streamer.onlive else ""
+
+        status = "Monitoring" if not task.flag else "Stoped"
+        return f'{onlive}{name} - {status}'
 
     def update(self):
         for task,name,status,delete,runing in list(self.widgets.values()):
@@ -64,26 +54,18 @@ class GUI(Frame):
             else:
                 runing.config(text="Start",width=5,command=lambda t=task,f=False: self.task_flag(t,f))
 
-    def update_event(self):
-        self.update()
-        self.after(self.bot.wait, self.update_event)
-        
-    def task_flag(self,task,flag):
-        task.flag = flag
-        self.update()
-
     def add_task(self):
         name=askstring("Add Streamer","Streamer Name")
-        self.bot.add(name,'twitch','firefox',True)
-        self.data.append([name,'twitch','firefox'])
-        self.drawitem(self.bot.tasks[name])
-
-    def remove(self,name,item):
-        item.destroy()
-        del self.widgets[name]
-        del self.bot.tasks[name]
-        for i in self.data:
-            if i[0] == name:
-                self.data.remove(i)
-                break
-        self.update()
+        if name != None:
+            site = self.choice.get()
+            self.bot.add(name,site,'firefox',True)
+            self.data.append([name,site,'firefox'])
+            self.itensBox.insert(END,self.getItem(self.bot.tasks[-1]))
+    
+    def del_task(self):
+        index = self.itensBox.curselection()
+        if(index != ()):
+            index = index[0]
+            self.itensBox.delete(index,END)
+            self.bot.tasks[index].flag = True
+            del self.data[index]

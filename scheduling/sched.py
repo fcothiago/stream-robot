@@ -16,7 +16,7 @@ class sbot(Thread):
         self.__stop__ = False
         self.__runing__ = False
         self.wait = 120
-        self.tasks = dict()
+        self.tasks = []
         self.exit = Event()
         for name, site, browser in configs:
             self.add(name, site, browser)
@@ -25,7 +25,7 @@ class sbot(Thread):
         self.__runing__ = True
         with ThreadPoolExecutor(4) as executor:
             while(self.__runing__ == True):
-                futures =  [executor.submit(t.start) for t in list(self.tasks.values())]
+                futures =  [executor.submit(t.start) for t in list(self.tasks)]
                 for future in concurrent.futures.as_completed(futures):
                     pass
                 self.exit.wait(self.wait)
@@ -39,6 +39,6 @@ class sbot(Thread):
         s = twitch(name) if site == 'twitch' else youtube(name) if site == "youtube" else None
         l = firefox(s.url) if browser == 'firefox' else None
         t = task(s,l)
-        self.tasks[name] = t
+        self.tasks.append(t)
         if start:
             t.start()
