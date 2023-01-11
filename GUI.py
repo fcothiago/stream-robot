@@ -43,8 +43,8 @@ class GUI(Frame):
         name = task.streamer.name
         onlive = "On live " if task.streamer.streamer.onlive else ""
 
-        status = "Monitoring" if not task.flag else "Stoped"
-        return f'{onlive}{name} - {status}'
+        status = "Monitoring" if not task.flag else "Stopped"
+        return f'{name} - {status} {onlive}'
 
     def update(self):
         self.itensBox.delete(0, END)
