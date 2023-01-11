@@ -33,7 +33,7 @@ python3 stream-bot.py
 
 If tou want to add a new Streamer or Youtuber, select the desired web site (youtube or twitch) in the choice menu and press the Add button. Infor the channel name of the streammer or youtuber. For instance, if you want to add the streamer wwww.twitch.tv/casimito, use casimito as a input. To delete a streamer, select the streamer in the list and press the del button.
 
-When a new tab is opened, the bot stop to monitor that streamer. If a streamer is being monitored, it gonna be marked as "Monitoring" or "Stoped" cas not.
+When a new tab is opened for a streamer, the bot stop to monitor that streamer. If a streamer is being monitored, it gonna be marked as "Monitoring" or "Stoped" case not.
 
 
 ## Using sbot class.
