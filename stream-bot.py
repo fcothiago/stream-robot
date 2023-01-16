@@ -1,10 +1,12 @@
 from tkinter import *
 from GUI import GUI
 from scheduling.sched import sbot
+import os
 import json
 
 if __name__ == "__main__":
-    file = open("streamers.json","r+")
+    print(os.path.dirname(__file__))
+    file = open(f'{os.path.dirname(__file__)}/streamers.json',"r+")
     #Loading Streamers
     data = None
     try:
