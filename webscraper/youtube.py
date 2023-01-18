@@ -17,9 +17,6 @@ class youtube(webscraper):
         if field != None:
             index = field.text.find("{")
             data = field.text[index:-1]
-            file = open('j.json','w')
-            file.write(data)
-            file.close()
             data = json.loads(data)
             try:
                 self.streamer.onlive = data['contents']['twoColumnBrowseResultsRenderer']['tabs'][0]['tabRenderer']['content']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents'][0]['channelFeaturedContentRenderer']['items'][0]['videoRenderer']['thumbnailOverlays'][0]['thumbnailOverlayTimeStatusRenderer']['icon']['iconType'] == "LIVE"
