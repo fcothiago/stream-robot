@@ -6,10 +6,10 @@ class task():
         self.streamer = streamer
         self.launcher = launcher
     def start(self):
-        if self.flag:
-            return
         self.streamer.update()
-        if(self.streamer.streamer.onlive):
+        if self.streamer.streamer.onlive and not self.flag:
             self.launcher.url = self.streamer.live_url
             self.launcher.launch()
             self.flag = True
+        elif not elf.streamer.streamer.onlive and self.flag:
+            self.flag = False
