@@ -17,10 +17,10 @@ The bot use BeautifulSoup libraly to parse HTML and extract streamer's lives  in
 pip3 install beautifulsoup4
 ```
 
-To use the GUI, you also need to install Tkinter in your computer.
+To use the GUI, you also need to install CustomTKinter in your computer.
 
 ```
-sudo apt-get install python-tk
+pip3 install customtkinter
 ```
 
 ## Using the GUI

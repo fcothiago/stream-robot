@@ -13,6 +13,7 @@ class GUI(Frame):
         self.bot = bot
         self.data = data
         self.master = master
+        """"
         self.pack(fill=BOTH, expand=1)
 
         container = Frame(self)
@@ -38,29 +39,41 @@ class GUI(Frame):
         self.itensBox.pack(fill=BOTH, expand=True)
         self.bot.callback = lambda: self.update()
         self.bot.start()
-
+        """
     def getItem(self,task):
+        pass
+        """
         name = task.streamer.name
         onlive = "is On Live" if task.streamer.streamer.onlive else ""
-        return f'{name} {onlive}'
+        return f'{name} {onlive}
+        """
 
     def update(self):
+        pass
+        """
         self.itensBox.delete(0, END)
         for t in self.bot.tasks:
             self.itensBox.insert(END,self.getItem(t))
+        """
 
     def add_task(self):
+        pass
+        """
         name=askstring("Add Streamer","Streamer Name")
         if name != None:
             site = self.choice.get()
             self.bot.add(name,site,'firefox',True)
             self.data.append([name,site,'firefox'])
             self.itensBox.insert(END,self.getItem(self.bot.tasks[-1]))
+        """
     
     def del_task(self):
+        pass
+        """
         index = self.itensBox.curselection()
         if(index != ()):
             index = index[0]
             self.itensBox.delete(index)
             del self.bot.tasks[index]
             del self.data[index]
+        """
