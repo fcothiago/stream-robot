@@ -1,18 +1,42 @@
-from tkinter import *
-import tkinter.simpledialog
+import customtkinter as ctk
+
 from scheduling.sched import sbot
 from tkinter.simpledialog import askstring
 from webscraper.twitch import twitch
 from webscraper.youtube import youtube
 from browser.firefox import firefox
 
-class GUI(Frame):
+class streamer_widget():
+    def __init__(self,container,name,state):
+        self.__frame__ = ctk.CTkFrame(container)
+        self.__label_name__ = ctk.CTkLabel(self.__frame__, text=f"{name}", font=("Arial", 16),anchor="w")
+        self.__label_state__ = ctk.CTkLabel(self.__frame__, text=f"{'onlive' if state else 'offline'}", font=("Arial", 16))
+        self.__label_name__.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+        self.__label_state__.grid(row=0, column=1, sticky="nsew", padx=5, pady=5)
+        self.__frame__.grid_columnconfigure(0, weight=1)
+        self.__frame__.pack(fill=ctk.X)
+
+class GUI(ctk.CTkFrame):
     def __init__(self,master,data,bot):
-        Frame.__init__(self, master)
+        ctk.CTkFrame.__init__(self, master)
         #Layout
         self.bot = bot
         self.data = data
         self.master = master
+        #self.itens = [self.getItem(t) for t in self.bot.tasks]
+
+        """ Adding Widgets """
+        self.pack(fill=ctk.BOTH, expand=1)
+        
+        for task in self.bot.tasks:
+            name = task.streamer.name
+            onlive = task.streamer.streamer.onlive
+            print(onlive)
+            swidget = streamer_widget(self,name,onlive)
+
+        self.bot.callback = lambda: self.update()
+        self.bot.start()
+
         """"
         self.pack(fill=BOTH, expand=1)
 
