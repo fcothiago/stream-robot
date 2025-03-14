@@ -16,6 +16,17 @@ class streamer_widget():
         self.__frame__.grid_columnconfigure(0, weight=1)
         self.__frame__.pack(fill=ctk.X)
 
+        self.__frame__.configure(fg_color=f"{'green' if state else 'gray'}")
+        self.__label_name__.configure(text_color=f"{'white' if state else 'black'}")
+        self.__label_state__.configure(text_color=f"{'white' if state else 'black'}")
+
+
+    def update_state(self,state):
+        self.__label_state__.configure(text=f"{'onlive' if state else 'offline'}")
+        self.__frame__.configure(fg_color=f"{'green' if state else 'gray'}")
+        self.__label_name__.configure(text_color=f"{'white' if state else 'black'}")
+        self.__label_state__.configure(text_color=f"{'white' if state else 'black'}")
+
 class GUI(ctk.CTkFrame):
     def __init__(self,master,data,bot):
         ctk.CTkFrame.__init__(self, master)
@@ -27,12 +38,13 @@ class GUI(ctk.CTkFrame):
 
         """ Adding Widgets """
         self.pack(fill=ctk.BOTH, expand=1)
+        self.streamers = dict()
         
         for task in self.bot.tasks:
             name = task.streamer.name
             onlive = task.streamer.streamer.onlive
-            print(onlive)
             swidget = streamer_widget(self,name,onlive)
+            self.streamers[name] = swidget
 
         self.bot.callback = lambda: self.update()
         self.bot.start()
@@ -73,7 +85,10 @@ class GUI(ctk.CTkFrame):
         """
 
     def update(self):
-        pass
+        for task in self.bot.tasks:
+            name = task.streamer.name
+            onlive = task.streamer.streamer.onlive
+            self.streamers[name].update_state(onlive)
         """
         self.itensBox.delete(0, END)
         for t in self.bot.tasks:
