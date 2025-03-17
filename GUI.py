@@ -45,6 +45,15 @@ class GUI(ctk.CTkFrame):
             onlive = task.streamer.streamer.onlive
             swidget = streamer_widget(self,name,onlive)
             self.streamers[name] = swidget
+        """ Add Buttons """ 
+        btn_area = ctk.CTkFrame(master)
+
+        twitch_btn = ctk.CTkButton(btn_area,text="twitch",fg_color="#6441a5",command=lambda n: n)
+        firefox_btn = ctk.CTkButton(btn_area,text="youtube",fg_color="#FF0000",command=lambda n: n)
+
+        twitch_btn.pack(side="left")
+        firefox_btn.pack(side="left")
+        btn_area.pack()
 
         self.bot.callback = lambda: self.update()
         self.bot.start()
