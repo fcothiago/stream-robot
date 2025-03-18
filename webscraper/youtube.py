@@ -3,8 +3,8 @@ import json
 
 class youtube(webscraper):
     def __init__(self,name):
-        self.__base_url__ = "https://www.youtube.com/"
-        webscraper.__init__(self,"@"+name)
+        self.__base_url__ = "https://www.youtube.com/@"
+        webscraper.__init__(self,name)
 
     def __check_infos__(self):
         tag = "script"

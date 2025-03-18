@@ -11,5 +11,5 @@ class task():
             self.launcher.url = self.streamer.live_url
             self.launcher.launch()
             self.flag = True
-        elif not elf.streamer.streamer.onlive and self.flag:
+        elif not self.streamer.streamer.onlive and self.flag:
             self.flag = False

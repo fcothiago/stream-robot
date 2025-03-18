@@ -15,7 +15,7 @@ class sbot(Thread):
         Thread.__init__(self)
         self.__stop__ = False
         self.__runing__ = False
-        self.wait = 120
+        self.wait = 10
         self.tasks = []
         self.exit = Event()
         self.callback = lambda cb : ()
