@@ -17,6 +17,7 @@ class sbot(Thread):
         self.__runing__ = False
         self.wait = 10
         self.tasks = []
+        self.remove_task_list = []
         self.exit = Event()
         self.callback = lambda cb : ()
         for name, site, browser in configs:
@@ -30,7 +31,9 @@ class sbot(Thread):
                 for future in concurrent.futures.as_completed(futures):
                     pass
                 self.callback()
+                self.__clean_tasks__()
                 self.exit.wait(self.wait)
+            self.__clean_tasks__()
             self.__runing__ = False
 
     def stop(self):
@@ -44,3 +47,15 @@ class sbot(Thread):
         self.tasks.append(t)
         if start:
             t.start()
+
+    def remove(self,name):
+        self.remove_task_list += [name]
+
+    def __clean_tasks__(self):
+        names = [t.streamer.name for t in list(self.tasks)]
+        for i,j in enumerate(names):
+            print(j)
+            if j in self.remove_task_list: 
+                del self.tasks[i]
+        self.remove_task_list = []
+

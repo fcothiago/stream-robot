@@ -35,9 +35,10 @@ class streamer_widget():
     def __delete__(self,gui):
         del gui.streamers[self.__name__]
         for i,j in enumerate(gui.data):
-            if j[0] == self.__name__
+            if j[0] == self.__name__:
                 break
         del gui.data[i]
+        gui.bot.remove(self.__name__)
         self.__frame__.destroy()
 
 class GUI(ctk.CTkFrame):
