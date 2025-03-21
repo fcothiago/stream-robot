@@ -15,7 +15,7 @@ class sbot(Thread):
         Thread.__init__(self)
         self.__stop__ = False
         self.__runing__ = False
-        self.wait = 10
+        self.wait = 120
         self.tasks = []
         self.remove_task_list = []
         self.exit = Event()
@@ -27,13 +27,12 @@ class sbot(Thread):
         self.__runing__ = True
         with ThreadPoolExecutor(4) as executor:
             while(self.__runing__ == True):
+                self.__clean_tasks__()
                 futures =  [executor.submit(t.start) for t in list(self.tasks)]
                 for future in concurrent.futures.as_completed(futures):
                     pass
                 self.callback()
-                self.__clean_tasks__()
                 self.exit.wait(self.wait)
-            self.__clean_tasks__()
             self.__runing__ = False
 
     def stop(self):
@@ -54,7 +53,6 @@ class sbot(Thread):
     def __clean_tasks__(self):
         names = [t.streamer.name for t in list(self.tasks)]
         for i,j in enumerate(names):
-            print(j)
             if j in self.remove_task_list: 
                 del self.tasks[i]
         self.remove_task_list = []
